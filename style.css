@@ -1,0 +1,650 @@
+:root {
+    --bg-color: #fafafa;
+    --surface: #ffffff;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --primary: #65a30d; /* Minimal green accent */
+    --border-color: #e5e7eb;
+    --section-bg-alt: #f3f4f6; /* 연한 회색 배경 (구분용) */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Pretendard Variable', -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+
+/* Navigation */
+nav {
+    position: sticky;
+    top: 0;
+    padding: 24px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 250, 250, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-main);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.nav-links a,
+.nav-links .nav-dropdown-trigger {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.nav-links a:hover,
+.nav-links a.active,
+.nav-links .nav-dropdown-trigger:hover,
+.nav-links .nav-dropdown-trigger.active {
+    color: var(--text-main);
+}
+
+/* Team — submenu is taken out of flow (position:absolute) so opening it never
+   pushes Contact or the other nav items sideways. It's anchored right under
+   "Team" and painted with the same translucent/blur material as the header
+   itself, so it reads as an extension of the header, not a separate card. */
+.nav-dropdown {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-dropdown-checkbox {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.nav-dropdown-trigger::after {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-left: 6px;
+    margin-bottom: 1px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.nav-dropdown-checkbox:checked ~ .nav-dropdown-trigger::after {
+    transform: rotate(225deg);
+    margin-bottom: -2px;
+}
+
+.nav-dropdown-items {
+    position: absolute;
+    /* Small enough to sit in the header's own unused vertical space (nav is
+       108px tall; the trigger line only uses the middle ~26px of it) — no
+       need to fake the header's background, since this renders inside nav. */
+    top: 100%;
+    margin-top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 14px;
+}
+
+.nav-dropdown-checkbox:checked ~ .nav-dropdown-items {
+    display: flex;
+}
+
+.nav-links .nav-dropdown-item {
+    text-decoration: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.nav-links .nav-dropdown-item:hover,
+.nav-links .nav-dropdown-item.active {
+    color: var(--text-main);
+}
+
+/* Common Section Styles */
+section {
+    padding: 120px 24px;
+}
+
+.section-header {
+    max-width: 1000px;
+    margin: 0 auto 60px;
+}
+
+.section-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+}
+
+/* Home Section */
+#home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 60px;
+    background: linear-gradient(rgba(250, 250, 250, 0.75), rgba(250, 250, 250, 1)), url('assets/images/zcell-station.png') center/cover no-repeat;
+}
+
+#home h1 {
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: var(--text-main);
+}
+
+#home p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--text-main);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.cta-btn:hover {
+    background: var(--primary);
+}
+
+/* About Section */
+#about {
+    background-color: var(--surface);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.about-description {
+    max-width: 800px;
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 60px;
+    line-height: 1.8;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.article-card {
+    background: var(--surface);
+    padding: 32px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.04);
+    border-color: #d1d5db;
+}
+
+.article-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+}
+
+.article-card p {
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+/* Members / Professor Section — no card boxing. Content sits directly on
+   the section with a bigger photo and generous whitespace between people,
+   instead of being squeezed into a small contained box. */
+#members,
+#professor {
+    background-color: var(--surface);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#members .grid {
+    /* Same centered 1000px box as .section-header, so this shares its left
+       edge with "Members" regardless of viewport width — the card
+       itself (not the grid) is what caps the readable width. */
+    grid-template-columns: 1fr;
+    max-width: 1000px;
+    margin: 0 auto;
+    gap: 56px;
+}
+
+.member-card {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    max-width: 640px;
+    text-align: left;
+}
+
+.member-photo {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: var(--section-bg-alt);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.member-photo svg {
+    width: 64px;
+    height: 64px;
+}
+
+.member-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.member-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.member-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+}
+
+.member-card p {
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.member-card .member-major {
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.member-email {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.member-email:hover {
+    color: var(--primary);
+}
+
+/* Professor — a wider, freer layout than the compact member cards: a big
+   photo beside the bio, plenty of breathing room. */
+.professor-card {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.professor-photo {
+    flex-shrink: 0;
+    width: 280px;
+    height: 280px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--section-bg-alt);
+    border: 1px solid var(--border-color);
+}
+
+.professor-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.professor-info h3 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+}
+
+.professor-role {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.professor-degree,
+.professor-affiliation {
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.professor-degree {
+    margin-bottom: 4px;
+}
+
+.professor-affiliation {
+    margin-bottom: 24px;
+}
+
+.professor-contact {
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.professor-contact p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.professor-contact a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.professor-contact a:hover {
+    color: var(--primary);
+}
+
+@media (max-width: 640px) {
+    .professor-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 32px;
+    }
+
+    .professor-photo {
+        width: 200px;
+        height: 200px;
+    }
+
+    .professor-contact {
+        text-align: left;
+    }
+
+    .member-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .member-photo {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+/* Contact Section */
+#contact {
+    background-color: var(--section-bg-alt);
+    text-align: center;
+}
+
+.contact-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--surface);
+    padding: 60px 40px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+}
+
+.contact-card h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.contact-card p {
+    color: var(--text-muted);
+    margin-bottom: 32px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+    text-align: left;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+.contact-form input[type="text"]:focus,
+.contact-form input[type="email"]:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.contact-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.contact-form button {
+    align-self: center;
+    border: none;
+    cursor: pointer;
+}
+
+/* Honeypot spam trap — kept in the tab/DOM flow (not display:none) so bots
+   that skip hidden fields still fill it in, but invisible to real users. */
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.email-link {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.email-link:hover {
+    border-color: var(--primary);
+}
+
+.office-address {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Footer */
+footer {
+    background-color: var(--bg-color);
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.footer-text {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    #home h1 { font-size: 36px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+}
+
+/* ===== Language Switch (pure HTML — links to a sibling *.ko.html page) ===== */
+.lang-slider {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 88px;
+    height: 34px;
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--section-bg-alt);
+    text-decoration: none;
+    user-select: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.lang-slider:hover {
+    border-color: #c4d9a8;
+    box-shadow: 0 0 0 4px rgba(101, 163, 13, 0.08);
+}
+
+.lang-slider span {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    transition: color 0.25s ease;
+}
+
+.lang-slider::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background: linear-gradient(135deg, #7cb518, var(--primary));
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(101, 163, 13, 0.4);
+    transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 1;
+}
+
+/* On an English page: thumb sits on EN */
+.lang-slider.is-en .lang-slider-en {
+    color: #ffffff;
+}
+
+/* On a Korean page: thumb slides to KOR */
+.lang-slider.is-ko::before {
+    transform: translateX(100%);
+}
+
+.lang-slider.is-ko .lang-slider-ko {
+    color: #ffffff;
+}
+
+/* Negative letter-spacing tightens Latin type nicely but crowds Hangul,
+   which is already full-width and evenly spaced — undo it on Korean pages
+   only, so the English headings keep their tighter tracking. */
+:lang(ko) #home h1,
+:lang(ko) .section-title,
+:lang(ko) .article-card h3,
+:lang(ko) .member-card h3,
+:lang(ko) .professor-info h3 {
+    letter-spacing: normal;
+}

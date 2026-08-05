@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - Zcell</title>
+
+    <!-- Typography -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <a
+        href="index.html"
+        class="logo"
+        style="display: flex; align-items: center"
+      >
+        <img
+          src="assets/images/zcell-logo.png"
+          alt="Zcell Logo"
+          style="
+            height: 60px;
+            width: 100px;
+            object-fit: cover;
+            object-position: center;
+          "
+        />
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <div class="nav-dropdown">
+          <input type="checkbox" id="team-menu" class="nav-dropdown-checkbox" />
+          <label for="team-menu" class="nav-dropdown-trigger">Team</label>
+          <div class="nav-dropdown-items">
+            <a href="professor.html" class="nav-dropdown-item">Professor</a>
+            <a href="members.html" class="nav-dropdown-item">Members</a>
+          </div>
+        </div>
+        <a href="contact.html" class="active">Contact</a>
+      </div>
+      <a
+        href="contact.ko.html"
+        class="lang-slider is-en"
+        aria-label="한국어로 보기"
+      >
+        <span class="lang-slider-en">EN</span>
+        <span class="lang-slider-ko">KOR</span>
+      </a>
+    </nav>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <div class="section-header" style="text-align: center; max-width: 600px">
+        <span class="section-label">Get in touch</span>
+        <h2 class="section-title">Ready to transform your city?</h2>
+      </div>
+      <div class="contact-card">
+        <h3>Contact Our Team</h3>
+        <p>
+          Reach out to us for inquiries regarding Zcell platform installation,
+          API integration, and partnership opportunities.
+        </p>
+
+        <form
+          action="https://formspree.io/f/xzepbpez"
+          method="POST"
+          class="contact-form"
+        >
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <textarea
+            name="message"
+            placeholder="Message"
+            rows="5"
+            required
+          ></textarea>
+          <input
+            type="text"
+            name="_gotcha"
+            class="hp-field"
+            tabindex="-1"
+            autocomplete="off"
+          />
+          <input
+            type="hidden"
+            name="_subject"
+            value="New inquiry from Zcell website"
+          />
+          <button type="submit" class="cta-btn">Send Message</button>
+        </form>
+
+        <!-- <a href="mailto:arkim@zcell.co.kr" class="email-link"
+          >arkim@zcell.co.kr</a
+        > -->
+        <p class="office-address">Zcell Office: Genesis Lab 410, Handong Global University</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p class="footer-text">
+        &copy; 2026 Zcell Station. All rights reserved.
+      </p>
+    </footer>
+  </body>
+</html>
