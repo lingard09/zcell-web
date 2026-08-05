@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/www/hk4ujeona36tvpuz/public_html/
+    - export DEPLOYPATH=/www/hk4ujeona36tvpuz/public_html/zcell.co.kr/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
