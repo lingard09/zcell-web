@@ -60,8 +60,7 @@ nav {
     gap: 40px;
 }
 
-.nav-links a,
-.nav-links .nav-dropdown-trigger {
+.nav-links a {
     color: var(--text-muted);
     text-decoration: none;
     font-size: 15px;
@@ -72,82 +71,7 @@ nav {
 }
 
 .nav-links a:hover,
-.nav-links a.active,
-.nav-links .nav-dropdown-trigger:hover,
-.nav-links .nav-dropdown-trigger.active {
-    color: var(--text-main);
-}
-
-/* Team — submenu is taken out of flow (position:absolute) so opening it never
-   pushes Contact or the other nav items sideways. It's anchored right under
-   "Team" and painted with the same translucent/blur material as the header
-   itself, so it reads as an extension of the header, not a separate card. */
-.nav-dropdown {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-}
-
-.nav-dropdown-checkbox {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.nav-dropdown-trigger {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-}
-
-.nav-dropdown-trigger::after {
-    content: "";
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    margin-left: 6px;
-    margin-bottom: 1px;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
-    transform: rotate(45deg);
-    transition: transform 0.2s ease;
-}
-
-.nav-dropdown-checkbox:checked ~ .nav-dropdown-trigger::after {
-    transform: rotate(225deg);
-    margin-bottom: -2px;
-}
-
-.nav-dropdown-items {
-    position: absolute;
-    /* Small enough to sit in the header's own unused vertical space (nav is
-       108px tall; the trigger line only uses the middle ~26px of it) — no
-       need to fake the header's background, since this renders inside nav. */
-    top: 100%;
-    margin-top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    gap: 14px;
-}
-
-.nav-dropdown-checkbox:checked ~ .nav-dropdown-items {
-    display: flex;
-}
-
-.nav-links .nav-dropdown-item {
-    text-decoration: none;
-    font-size: 12px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    transition: color 0.2s;
-}
-
-.nav-links .nav-dropdown-item:hover,
-.nav-links .nav-dropdown-item.active {
+.nav-links a.active {
     color: var(--text-main);
 }
 
@@ -271,11 +195,10 @@ section {
     color: var(--text-muted);
 }
 
-/* Members / Professor Section — no card boxing. Content sits directly on
-   the section with a bigger photo and generous whitespace between people,
-   instead of being squeezed into a small contained box. */
-#members,
-#professor {
+/* Members Section — no card boxing. Content sits directly on the section
+   with a bigger photo and generous whitespace between people, instead of
+   being squeezed into a small contained box. */
+#members {
     background-color: var(--surface);
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
@@ -359,100 +282,7 @@ section {
     color: var(--primary);
 }
 
-/* Professor — a wider, freer layout than the compact member cards: a big
-   photo beside the bio, plenty of breathing room. */
-.professor-card {
-    display: flex;
-    align-items: center;
-    gap: 64px;
-    max-width: 820px;
-    margin: 0 auto;
-    text-align: left;
-}
-
-.professor-photo {
-    flex-shrink: 0;
-    width: 280px;
-    height: 280px;
-    border-radius: 16px;
-    overflow: hidden;
-    background: var(--section-bg-alt);
-    border: 1px solid var(--border-color);
-}
-
-.professor-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.professor-info h3 {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 10px;
-}
-
-.professor-role {
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--primary);
-    margin-bottom: 10px;
-}
-
-.professor-degree,
-.professor-affiliation {
-    font-size: 15px;
-    color: var(--text-muted);
-}
-
-.professor-degree {
-    margin-bottom: 4px;
-}
-
-.professor-affiliation {
-    margin-bottom: 24px;
-}
-
-.professor-contact {
-    padding-top: 20px;
-    border-top: 1px solid var(--border-color);
-}
-
-.professor-contact p {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-}
-
-.professor-contact a {
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.professor-contact a:hover {
-    color: var(--primary);
-}
-
 @media (max-width: 640px) {
-    .professor-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 32px;
-    }
-
-    .professor-photo {
-        width: 200px;
-        height: 200px;
-    }
-
-    .professor-contact {
-        text-align: left;
-    }
-
     .member-card {
         flex-direction: column;
         text-align: center;
@@ -610,6 +440,10 @@ footer {
     transition: color 0.25s ease;
 }
 
+/* KOR on the left, EN on the right */
+.lang-slider-ko { order: 1; }
+.lang-slider-en { order: 2; }
+
 .lang-slider::before {
     content: "";
     position: absolute;
@@ -624,17 +458,17 @@ footer {
     z-index: 1;
 }
 
-/* On an English page: thumb sits on EN */
-.lang-slider.is-en .lang-slider-en {
+/* On a Korean page: thumb sits on KOR (left, default position) */
+.lang-slider.is-ko .lang-slider-ko {
     color: #ffffff;
 }
 
-/* On a Korean page: thumb slides to KOR */
-.lang-slider.is-ko::before {
+/* On an English page: thumb slides to EN (right) */
+.lang-slider.is-en::before {
     transform: translateX(100%);
 }
 
-.lang-slider.is-ko .lang-slider-ko {
+.lang-slider.is-en .lang-slider-en {
     color: #ffffff;
 }
 
@@ -644,7 +478,6 @@ footer {
 :lang(ko) #home h1,
 :lang(ko) .section-title,
 :lang(ko) .article-card h3,
-:lang(ko) .member-card h3,
-:lang(ko) .professor-info h3 {
+:lang(ko) .member-card h3 {
     letter-spacing: normal;
 }
