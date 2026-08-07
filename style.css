@@ -392,18 +392,49 @@ section {
 /* Footer */
 footer {
     background-color: var(--bg-color);
+    margin-top: 80px;
     padding: 40px 24px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-top: 1px solid var(--border-color);
 }
 
 .footer-text {
+    flex: 1;
+    min-width: 0;
     color: var(--text-muted);
     font-size: 13px;
+    text-align: left;
+}
+
+footer .lang-slider {
+    margin-top: 0;
+    margin-left: auto;
 }
 
 @media (max-width: 768px) {
     #home h1 { font-size: 36px; }
-    .nav-links { display: none; }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 85px;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border-color);
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        gap: 20px;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .hamburger-menu {
+        display: block;
+    }
     section { padding: 80px 24px; }
 }
 
@@ -411,6 +442,7 @@ footer {
 .lang-slider {
     position: relative;
     display: inline-flex;
+    flex: none;
     align-items: center;
     width: 88px;
     height: 34px;
@@ -421,6 +453,7 @@ footer {
     text-decoration: none;
     user-select: none;
     transition: border-color 0.2s, box-shadow 0.2s;
+    z-index: 120;
 }
 
 .lang-slider:hover {
@@ -480,4 +513,35 @@ footer {
 :lang(ko) .article-card h3,
 :lang(ko) .member-card h3 {
     letter-spacing: normal;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101;
+}
+
+.hamburger-line {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-main);
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .lang-slider {
+        width: 84px;
+        height: 32px;
+        margin: 0 auto;
+    }
 }

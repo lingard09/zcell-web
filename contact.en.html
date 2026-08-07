@@ -37,14 +37,11 @@
         <a href="members.en.html">Members</a>
         <a href="contact.en.html" class="active">Contact</a>
       </div>
-      <a
-        href="contact.html"
-        class="lang-slider is-en"
-        aria-label="한국어로 보기"
-      >
-        <span class="lang-slider-en">EN</span>
-        <span class="lang-slider-ko">KOR</span>
-      </a>
+      <button class="hamburger-menu" type="button" aria-label="Toggle navigation">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </nav>
 
     <!-- Contact Section -->
@@ -100,6 +97,25 @@
     <!-- Footer -->
     <footer>
       <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
+      <a
+        href="contact.html"
+        class="lang-slider is-en"
+        aria-label="한국어로 보기"
+      >
+        <span class="lang-slider-en">EN</span>
+        <span class="lang-slider-ko">KOR</span>
+      </a>
     </footer>
+
+    <script>
+      const hamburgerMenu = document.querySelector('.hamburger-menu');
+      const navLinks = document.querySelector('.nav-links');
+
+      if (hamburgerMenu && navLinks) {
+        hamburgerMenu.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+        });
+      }
+    </script>
   </body>
 </html>
