@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zcell Dashboard</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <style>
+      :root {
+        --bg: #0a0e17;
+        --surface: rgba(255, 255, 255, 0.04);
+        --surface-hover: rgba(255, 255, 255, 0.07);
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #e8ecf4;
+        --text-dim: #8a93a6;
+        --accent: #4ade80;
+        --accent2: #38bdf8;
+        --warn: #fbbf24;
+        --danger: #f87171;
+        --radius: 16px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          "Pretendard Variable",
+          Pretendard,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        background-image:
+          radial-gradient(
+            ellipse 800px 400px at 20% -10%,
+            rgba(56, 189, 248, 0.12),
+            transparent
+          ),
+          radial-gradient(
+            ellipse 600px 400px at 90% 10%,
+            rgba(74, 222, 128, 0.08),
+            transparent
+          );
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      /* Header */
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0 28px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        background: linear-gradient(135deg, var(--accent2), var(--accent));
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 19px;
+        color: #04121f;
+      }
+      .logo h1 {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .logo span {
+        color: var(--text-dim);
+        font-weight: 400;
+        font-size: 13px;
+        margin-left: 6px;
+      }
+      .station-select {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 9px 16px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14px;
+        cursor: pointer;
+        outline: none;
+      }
+      .live-badge {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(74, 222, 128, 0.1);
+        border: 1px solid rgba(74, 222, 128, 0.25);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .pulse {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1.8s ease-out infinite;
+      }
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5);
+        }
+        70% {
+          box-shadow: 0 0 0 9px rgba(74, 222, 128, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+        }
+      }
+
+      /* KPI Cards */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .kpi {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+        backdrop-filter: blur(12px);
+        transition:
+          transform 0.15s,
+          background 0.15s;
+        position: relative;
+        overflow: hidden;
+      }
+      .kpi:hover {
+        transform: translateY(-3px);
+        background: var(--surface-hover);
+      }
+      .kpi::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--bar, var(--accent2));
+        opacity: 0.85;
+      }
+      .kpi .label {
+        font-size: 12.5px;
+        color: var(--text-dim);
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+      }
+      .kpi .value {
+        font-size: 27px;
+        font-weight: 750;
+        margin-top: 9px;
+        letter-spacing: -0.02em;
+      }
+      .kpi .unit {
+        font-size: 13px;
+        color: var(--text-dim);
+        font-weight: 500;
+        margin-left: 3px;
+      }
+      .kpi .delta {
+        font-size: 12px;
+        margin-top: 7px;
+        font-weight: 600;
+      }
+      .up {
+        color: var(--danger);
+      }
+      .down {
+        color: var(--accent);
+      }
+      .flat {
+        color: var(--text-dim);
+      }
+      .chip {
+        font-size: 10.5px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+      .chip.good {
+        background: rgba(74, 222, 128, 0.12);
+        color: var(--accent);
+      }
+      .chip.warn {
+        background: rgba(251, 191, 36, 0.12);
+        color: var(--warn);
+      }
+
+      /* Panels */
+      .panel-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px;
+        backdrop-filter: blur(12px);
+      }
+      .panel h2 {
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .panel .sub {
+        font-size: 12.5px;
+        color: var(--text-dim);
+        margin-bottom: 16px;
+      }
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .range-tabs {
+        display: flex;
+        gap: 4px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 3px;
+        border-radius: 9px;
+      }
+      .range-tabs button {
+        background: none;
+        border: none;
+        color: var(--text-dim);
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      .range-tabs button.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text);
+      }
+      .chart-wrap {
+        position: relative;
+        height: 280px;
+      }
+
+      /* Events */
+      .event {
+        display: flex;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .event:last-child {
+        border-bottom: none;
+      }
+      .event .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        margin-top: 5px;
+        flex-shrink: 0;
+      }
+      .dot.warn {
+        background: var(--warn);
+        box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+      }
+      .dot.danger {
+        background: var(--danger);
+        box-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+      }
+      .dot.info {
+        background: var(--accent2);
+        box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+      }
+      .event .msg {
+        font-size: 13.5px;
+        font-weight: 550;
+      }
+      .event .time {
+        font-size: 11.5px;
+        color: var(--text-dim);
+        margin-top: 3px;
+      }
+
+      /* Stations table */
+      .stations-panel table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .stations-panel th {
+        text-align: left;
+        font-size: 11.5px;
+        color: var(--text-dim);
+        font-weight: 600;
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .stations-panel td {
+        padding: 12px 10px;
+        font-size: 13.5px;
+        border-bottom: 1px solid var(--border);
+      }
+      .stations-panel tr:last-child td {
+        border-bottom: none;
+      }
+      .stations-panel tr:hover td {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 650;
+      }
+      .status-pill i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+      }
+      .st-online i {
+        background: var(--accent);
+      }
+      .st-online {
+        color: var(--accent);
+      }
+      .st-offline i {
+        background: var(--text-dim);
+      }
+      .st-offline {
+        color: var(--text-dim);
+      }
+      .st-warning i {
+        background: var(--warn);
+      }
+      .st-warning {
+        color: var(--warn);
+      }
+
+      /* Map */
+      #map {
+        height: 380px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: #0d1220;
+      }
+      .bench-marker {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 0 12px currentColor;
+      }
+      .bench-marker.online {
+        background: var(--accent);
+        color: rgba(74, 222, 128, 0.7);
+      }
+      .bench-marker.warning {
+        background: var(--warn);
+        color: rgba(251, 191, 36, 0.7);
+      }
+      .bench-marker.offline {
+        background: #5c6478;
+        color: rgba(92, 100, 120, 0.5);
+      }
+      .bench-marker.online::after {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        border-radius: 50%;
+        animation: pulse 1.8s ease-out infinite;
+      }
+      .iw {
+        background: rgba(15, 20, 32, 0.97);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        padding: 14px 16px;
+        font-size: 13px;
+        line-height: 1.6;
+        min-width: 230px;
+        font-family: "Pretendard Variable", Pretendard, sans-serif;
+      }
+      .map-notice {
+        height: 100%;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 13.5px;
+        line-height: 1.8;
+        padding: 20px;
+      }
+      .map-notice code {
+        background: rgba(255, 255, 255, 0.07);
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 12.5px;
+        color: var(--accent2);
+      }
+      .popup-title {
+        font-weight: 750;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .popup-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--text-dim);
+      }
+      .popup-row b {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .map-legend {
+        display: flex;
+        gap: 16px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-dim);
+      }
+      .map-legend span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .map-legend i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: var(--text-dim);
+        font-size: 12px;
+      }
+
+      @media (max-width: 980px) {
+        .kpi-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .panel-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 600px) {
+      .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      .header-row + .header-row {
+        margin-top: 12px;
+      }
+        .kpi-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .station-select {
+          width: 100%;
+        }
+        .logo h1 {
+          font-size: 18px;
+        }
+        .logo span {
+          font-size: 12px;
+        }
+        .live-badge {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+        .stations-panel {
+          overflow-x: auto;
+        }
+        .stations-panel th,
+        .stations-panel td {
+          white-space: nowrap;
+        }
+        .stations-panel th {
+            min-width: 80px; /* Adjust as needed */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-row">
+            <div class="logo">
+              <div class="logo-mark">Z</div>
+              <h1>Zcell <span>환경 모니터링 대시보드</span></h1>
+            </div>
+            <div class="live-badge">
+                <div class="pulse"></div>
+                LIVE · 방금 업데이트
+            </div>
+        </div>
+        <div class="header-row">
+            <select class="station-select" id="stationSelect">
+                <option value="1">데이터 불러오는 중...</option>
+            </select>
+        </div>
+      </header>
+
+      <section class="kpi-grid">
+        <div class="kpi" style="--bar: #f97316">
+          <div class="label">온도 <span class="chip good">정상</span></div>
+          <div class="value">25.4<span class="unit">℃</span></div>
+          <div class="delta flat">— 변화 없음</div>
+        </div>
+        <div class="kpi" style="--bar: #22d3ee">
+          <div class="label">습도 <span class="chip good">정상</span></div>
+          <div class="value">51.8<span class="unit">%</span></div>
+          <div class="delta down">▼ 3% (1h)</div>
+        </div>
+        <div class="kpi" style="--bar: #38bdf8">
+          <div class="label">PM2.5 <span class="chip warn">나쁨</span></div>
+          <div class="value">38<span class="unit">㎍/m³</span></div>
+          <div class="delta up">▲ 21% (1h)</div>
+        </div>
+        <div class="kpi" style="--bar: #a78bfa">
+          <div class="label">PM10 <span class="chip good">보통</span></div>
+          <div class="value">61<span class="unit">㎍/m³</span></div>
+          <div class="delta up">▲ 8% (1h)</div>
+        </div>
+        <div class="kpi" style="--bar: #4ade80">
+          <div class="label">
+            지면온도 <span class="chip warn">열섬 주의</span>
+          </div>
+          <div class="value">41.2<span class="unit">℃</span></div>
+          <div class="delta up">▲ 공기 대비 +15.8℃</div>
+        </div>
+        <div class="kpi" style="--bar: #fca5a5">
+          <div class="label">CO2 <span class="chip good">보통</span></div>
+          <div class="value">0<span class="unit">ppm</span></div>
+          <div class="delta flat">—</div>
+        </div>
+        <div class="kpi" style="--bar: #d8b4fe">
+          <div class="label">NO2 <span class="chip good">보통</span></div>
+          <div class="value">0<span class="unit">ppm</span></div>
+          <div class="delta flat">—</div>
+        </div>
+        <div class="kpi" style="--bar: #f43f5e">
+          <div class="label">pH <span class="chip good">정상</span></div>
+          <div class="value">7.0<span class="unit"></span></div>
+          <div class="delta flat">—</div>
+        </div>
+        <div class="kpi" style="--bar: #2dd4bf">
+          <div class="label">
+            리액터 탁도 <span class="chip warn">교체 권장</span>
+          </div>
+          <div class="value">3.7<span class="unit">OD</span></div>
+          <div class="delta up">▲ 12% (24h)</div>
+        </div>
+        <div class="kpi" style="--bar: #fbbf24">
+          <div class="label">배터리 <span class="chip good">정상</span></div>
+          <div class="value">87<span class="unit">%</span></div>
+          <div class="delta flat">약 12일 남음</div>
+        </div>
+      </section>
+
+      <section class="panel-grid">
+        <div class="panel" style="display: flex; flex-direction: column; gap: 24px;">
+          <div class="panel-head">
+            <div>
+              <h2>대기질 및 가스 추이</h2>
+              <div class="sub">PM2.5 · CO2 · NO2 — Station #1</div>
+            </div>
+            <div class="range-tabs">
+              <button>10M</button><button class="active">1H</button><button>24H</button><button>7D</button><button>30D</button>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height: 180px;"><canvas id="airChart"></canvas></div>
+          
+          <div class="panel-head" style="margin-top: 10px;">
+            <div>
+              <h2>온습도 환경 추이</h2>
+              <div class="sub">대기온도 · 지면온도 · 습도</div>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height: 180px;"><canvas id="envChart"></canvas></div>
+        </div>
+
+        <div class="panel" id="eventsPanel">
+          <h2>최근 이벤트</h2>
+          <div class="sub">events · status 토픽 기준</div>
+          <!-- Javascript에서 동적으로 채워집니다 -->
+        </div>
+      </section>
+
+      <section class="panel" style="margin-bottom: 20px">
+        <div class="panel-head">
+          <div>
+            <h2>스마트벤치 위치 현황</h2>
+            <div class="sub">
+              지도에서 각 스테이션의 위치와 상태 확인 · 마커 클릭 시 상세 정보
+            </div>
+          </div>
+        </div>
+        <div id="map"></div>
+        <div class="map-legend">
+          <span><i style="background: var(--accent)"></i>online</span>
+          <span><i style="background: var(--warn)"></i>warning</span>
+          <span><i style="background: #5c6478"></i>offline</span>
+        </div>
+      </section>
+
+      <section class="panel stations-panel">
+        <h2>스테이션 현황</h2>
+        <div class="sub">전체 3대 · 온라인 2 · 오프라인 1</div>
+        <table>
+          <thead>
+            <tr>
+              <th>스테이션</th>
+              <th>위치</th>
+              <th>상태</th>
+              <th>PM2.5</th>
+              <th>온도</th>
+              <th>지면온도</th>
+              <th>습도</th>
+              <th>배터리</th>
+              <th>마지막 수신</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>#1</b></td>
+              <td>야외 중앙광장</td>
+              <td>
+                <span class="status-pill st-online"><i></i>online</span>
+              </td>
+              <td>38 ㎍/m³</td>
+              <td>25.4 ℃</td>
+              <td>41.2 ℃</td>
+              <td>51.8 %</td>
+              <td>87 %</td>
+              <td>방금</td>
+            </tr>
+            <tr>
+              <td><b>#2</b></td>
+              <td>도서관 앞 휴식 공간</td>
+              <td>
+                <span class="status-pill st-warning"><i></i>warning</span>
+              </td>
+              <td>22 ㎍/m³</td>
+              <td>24.1 ℃</td>
+              <td>38.6 ℃</td>
+              <td>48.2 %</td>
+              <td>13 %</td>
+              <td>1분 전</td>
+            </tr>
+            <tr>
+              <td><b>#3</b></td>
+              <td>버스정류장 벤치</td>
+              <td>
+                <span class="status-pill st-offline"><i></i>offline</span>
+              </td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>5시간 전</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <footer>Zcell Dashboard Mockup v0.1 — 디자인 시안 (목 데이터)</footer>
+    </div>
+
+    <script>
+      const API_BASE_URL = "https://express-autopilot-ritzy.ngrok-free.dev/api";
+      const API_KEY = "xJgIBbSh0tuIyQXqPtRJZMncea7NUvdH_sTwaLuI_SA";
+
+      const reqHeaders = {
+        "X-API-Key": API_KEY,
+        "ngrok-skip-browser-warning": "69420",
+      };
+
+      // Chart 1: Air Quality & Gas
+      const ctxAir = document.getElementById("airChart");
+      const gradCo2 = ctxAir.getContext("2d").createLinearGradient(0, 0, 0, 180);
+      gradCo2.addColorStop(0, "rgba(56,189,248,0.25)");
+      gradCo2.addColorStop(1, "rgba(56,189,248,0)");
+
+      const airChart = new Chart(ctxAir, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "PM2.5 (㎍/m³)",
+              data: [],
+              borderColor: "#38bdf8",
+              backgroundColor: gradCo2,
+              fill: true,
+              tension: 0.4,
+              borderWidth: 2.5,
+              pointRadius: 0,
+              yAxisID: "y",
+            },
+            {
+              label: "CO2 (ppm)",
+              data: [],
+              borderColor: "#a3e635",
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 0,
+              yAxisID: "y1",
+            },
+            {
+              label: "NO2 (ppm)",
+              data: [],
+              borderColor: "#ef4444",
+              tension: 0.4,
+              borderWidth: 1.5,
+              pointRadius: 0,
+              yAxisID: "y2",
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            zoom: {
+              pan: { enabled: true, mode: 'x' },
+              zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          scales: {
+            x: {
+              type: "time",
+              time: { tooltipFormat: "yyyy-MM-dd HH:mm", displayFormats: { minute: "HH:mm", hour: "HH:mm", day: "MM-dd" } },
+              grid: { color: "rgba(255,255,255,0.04)" },
+              ticks: { color: "#5c6478", font: { size: 11 } },
+            },
+            y: { position: "left", grid: { color: "rgba(255,255,255,0.05)" }, ticks: { color: "#38bdf8" } },
+            y1: { position: "right", grid: { drawOnChartArea: false }, ticks: { color: "#a3e635" } },
+            y2: { position: "right", grid: { drawOnChartArea: false }, ticks: { color: "#ef4444" } },
+          },
+        },
+      });
+
+      // Chart 2: Environment
+      const ctxEnv = document.getElementById("envChart");
+      const envChart = new Chart(ctxEnv, {
+        type: "line",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "대기온도 (℃)",
+              data: [],
+              borderColor: "#f97316",
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 0,
+              yAxisID: "y",
+            },
+            {
+              label: "지면온도 (℃)",
+              data: [],
+              borderColor: "#fbbf24",
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 0,
+              yAxisID: "y",
+            },
+            {
+              label: "습도 (%)",
+              data: [],
+              borderColor: "#22d3ee",
+              borderDash: [5, 4],
+              tension: 0.4,
+              borderWidth: 1.5,
+              pointRadius: 0,
+              yAxisID: "y1",
+            },
+          ],
+        },
+        options: {
+          plugins: {
+            zoom: {
+              pan: { enabled: true, mode: 'x' },
+              zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+            }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          scales: {
+            x: {
+              type: "time",
+              time: { tooltipFormat: "yyyy-MM-dd HH:mm", displayFormats: { minute: "HH:mm", hour: "HH:mm", day: "MM-dd" } },
+              grid: { color: "rgba(255,255,255,0.04)" },
+              ticks: { color: "#5c6478", font: { size: 11 } },
+            },
+            y: { position: "left", grid: { color: "rgba(255,255,255,0.05)" }, ticks: { color: "#f97316" } },
+            y1: { position: "right", grid: { drawOnChartArea: false }, ticks: { color: "#22d3ee" } },
+          },
+        },
+      });
+
+      // 네이버 지도 및 상태 컬러 매핑
+      const NAVER_MAP_CLIENT_ID = "yaszgkt52h";
+      const statusLabel = {
+        online: "온라인",
+        warning: "경고",
+        offline: "오프라인",
+      };
+      const statusColor = {
+        online: "#4ade80",
+        warning: "#fbbf24",
+        offline: "#5c6478",
+      };
+      function updateKPI(data, oldData = null) {
+        if (!data) return;
+
+        const kpis = document.querySelectorAll(".kpi");
+        kpis.forEach((kpi) => {
+          const labelTxt = kpi.querySelector(".label").textContent.trim();
+          let val = null,
+            oldVal = null,
+            unit = "";
+
+          if (labelTxt.includes("PM2.5")) {
+            val = data.pm25;
+            oldVal = oldData?.pm25;
+            unit = "㎍/m³";
+          } else if (labelTxt.includes("지면온도")) {
+            val = data.surfaceTemp;
+            oldVal = oldData?.surfaceTemp;
+            unit = "℃";
+          } else if (labelTxt.includes("온도")) {
+            val = data.temperature;
+            oldVal = oldData?.temperature;
+            unit = "℃";
+          } else if (labelTxt.includes("습도")) {
+            val = data.humidity;
+            oldVal = oldData?.humidity;
+            unit = "%";
+          } else if (labelTxt.includes("PM10")) {
+            val = data.pm10;
+            oldVal = oldData?.pm10;
+            unit = "㎍/m³";
+          } else if (labelTxt.includes("탁도")) {
+            val = data.turbidity;
+            oldVal = oldData?.turbidity;
+            unit = "OD";
+          } else if (labelTxt.includes("배터리")) {
+            val = data.batteryLevel;
+            oldVal = oldData?.batteryLevel;
+            unit = "%";
+          } else if (labelTxt.includes("CO2")) {
+            val = data.co2;
+            oldVal = oldData?.co2;
+            unit = "ppm";
+          } else if (labelTxt.includes("NO2")) {
+            val = data.no2;
+            oldVal = oldData?.no2;
+            unit = "ppm";
+          } else if (labelTxt.includes("pH")) {
+            val = data.ph;
+            oldVal = oldData?.ph;
+            unit = "";
+          }
+
+          // 1. 최신 수치 렌더링
+          if (val !== undefined && val !== null) {
+            kpi.querySelector(".value").innerHTML =
+              `${typeof val === "number" ? val.toFixed(1) : val}<span class="unit">${unit}</span>`;
+          } else {
+            kpi.querySelector(".value").innerHTML =
+              `—<span class="unit">${unit}</span>`;
+          }
+
+          // 2. 변화량(Delta) 렌더링
+          const deltaEl = kpi.querySelector(".delta");
+          if (deltaEl) {
+            if (
+              oldVal !== undefined &&
+              oldVal !== null &&
+              val !== undefined &&
+              val !== null
+            ) {
+              const diff = val - oldVal;
+              if (Math.abs(diff) < 0.1) {
+                deltaEl.className = "delta flat";
+                deltaEl.textContent = "— 변화 없음";
+              } else {
+                const sign = diff > 0 ? "▲" : "▼";
+                const colorClass = diff > 0 ? "up" : "down";
+                deltaEl.className = `delta ${colorClass}`;
+                const rangeText = currentRangeHours < 1 ? Math.round(currentRangeHours * 60) + "m" : currentRangeHours + "h";
+                deltaEl.textContent = `${sign} ${Math.abs(diff).toFixed(1)}${unit} (${rangeText})`;
+              }
+            } else {
+              deltaEl.className = "delta flat";
+              deltaEl.textContent = "— 데이터 없음";
+            }
+          }
+          // 3. 상태 칩(Chip) 업데이트 로직
+          const labelEl = kpi.querySelector(".label");
+          const chipEl = labelEl.querySelector(".chip");
+          if (chipEl && val !== null && val !== undefined) {
+            let status = "good",
+              text = "정상";
+            if (labelTxt.includes("PM2.5")) {
+              if (val <= 15) text = "좋음";
+              else if (val <= 35) text = "보통";
+              else if (val <= 75) {
+                text = "나쁨";
+                status = "warn";
+              } else {
+                text = "매우나쁨";
+                status = "warn";
+              }
+            } else if (labelTxt.includes("PM10")) {
+              if (val <= 30) text = "좋음";
+              else if (val <= 80) text = "보통";
+              else if (val <= 150) {
+                text = "나쁨";
+                status = "warn";
+              } else {
+                text = "매우나쁨";
+                status = "warn";
+              }
+            } else if (
+              labelTxt.includes("온도") &&
+              !labelTxt.includes("지면")
+            ) {
+              if (val >= 33) {
+                text = "폭염";
+                status = "warn";
+              } else if (val <= 0) {
+                text = "결빙주의";
+                status = "warn";
+              }
+            } else if (labelTxt.includes("지면온도")) {
+              if (val >= 40) {
+                text = "열섬 주의";
+                status = "warn";
+              }
+            } else if (labelTxt.includes("습도")) {
+              if (val >= 80 || val <= 20) {
+                text = "주의";
+                status = "warn";
+              }
+            } else if (labelTxt.includes("탁도")) {
+              if (val >= 2.0) {
+                text = "교체 권장";
+                status = "warn";
+              }
+            } else if (labelTxt.includes("배터리")) {
+              if (val <= 20) {
+                text = "충전 필요";
+                status = "warn";
+              }
+            } else if (labelTxt.includes("CO2")) {
+              if (val > 1000) {
+                text = "환기 요망";
+                status = "warn";
+              } else text = "보통";
+            } else if (labelTxt.includes("NO2")) {
+              if (val > 0.06) {
+                text = "나쁨";
+                status = "warn";
+              } else text = "보통";
+            } else if (labelTxt.includes("pH")) {
+              if (val < 6.5 || val > 8.5) {
+                text = "주의";
+                status = "warn";
+              } else text = "정상";
+            }
+            chipEl.className = `chip ${status}`;
+            chipEl.textContent = text;
+          } else if (chipEl) {
+            chipEl.className = "chip";
+            chipEl.textContent = "—";
+          }
+        });
+      }
+      let map = null;
+      let mapMarkers = [];
+
+      function showMapNotice(html) {
+        document.getElementById("map").innerHTML =
+          `<div class="map-notice"><div>${html}</div></div>`;
+      }
+
+      let currentStationId = 1; // 기본 스테이션 ID
+      let isDropdownInitialized = false;
+
+      // 1. 최신 데이터(KPI) 가져오기
+      async function fetchLatestData(stationId = currentStationId) {
+        try {
+          const res = await fetch(
+            `${API_BASE_URL}/stations/${stationId}/latest`,
+            { headers: reqHeaders },
+          );
+          if (!res.ok) return;
+          const json = await res.json();
+          updateKPI(json.data);
+        } catch (err) {
+          console.error("Latest fetch error:", err);
+        }
+      }
+
+      // 2. 스테이션 목록 가져오기 (테이블 & 지도)
+      async function fetchStations() {
+        try {
+          const res = await fetch(`${API_BASE_URL}/stations`, {
+            headers: reqHeaders,
+          });
+          if (!res.ok) return;
+          const json = await res.json();
+          const stList = json.data.stations;
+
+          // 드롭다운 업데이트 (처음 한 번 또는 갯수가 다를 때만)
+          const selectEl = document.getElementById("stationSelect");
+          if (
+            !isDropdownInitialized ||
+            selectEl.options.length !== stList.length
+          ) {
+            selectEl.innerHTML = "";
+            stList.forEach((s) => {
+              const opt = document.createElement("option");
+              opt.value = s.stationId;
+              opt.textContent = `Station #${s.stationId} — ${s.name}`;
+              if (s.stationId == currentStationId) opt.selected = true;
+              selectEl.appendChild(opt);
+            });
+            isDropdownInitialized = true;
+          }
+
+          // 상단 요약 텍스트 업데이트
+          const onlineCnt = stList.filter((s) => s.status === "online").length;
+          const offlineCnt = stList.filter(
+            (s) => s.status === "offline",
+          ).length;
+          const warningCnt = stList.filter(
+            (s) => s.status === "warning",
+          ).length;
+          const subEl = document.querySelector(".stations-panel .sub");
+          if (subEl)
+            subEl.textContent = `전체 ${stList.length}대 · 온라인 ${onlineCnt} · 경고 ${warningCnt} · 오프라인 ${offlineCnt}`;
+
+          // 각 스테이션별 최신 수치 가져오기 (표 업데이트용)
+          const updatedStList = await Promise.all(
+            stList.map(async (s) => {
+              try {
+                const lRes = await fetch(
+                  `${API_BASE_URL}/stations/${s.stationId}/latest`,
+                  { headers: reqHeaders },
+                );
+                if (lRes.ok) {
+                  const lJson = await lRes.json();
+                  s.latestData = lJson.data;
+                }
+              } catch (e) {
+                console.error(
+                  "Failed to fetch latest for station",
+                  s.stationId,
+                );
+              }
+              return s;
+            }),
+          );
+
+          updateStationsTable(updatedStList);
+          if (map) updateMapMarkers(updatedStList);
+        } catch (err) {
+          console.error("Stations fetch error:", err);
+        }
+      }
+
+      function updateStationsTable(stations) {
+        const tbody = document.querySelector(".stations-panel tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        stations.forEach((s) => {
+          const st = s.status || "offline";
+          const d = s.latestData || {};
+
+          // 날짜 포맷 (hh:mm)
+          const lastSeenStr = s.lastSeen
+            ? new Date(s.lastSeen).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "없음";
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><b>#${s.stationId}</b></td><td>${s.name}</td>
+            <td><span class="status-pill st-${st}"><i></i>${statusLabel[st] || st}</span></td>
+            <td>${d.pm25 !== undefined && d.pm25 !== null ? d.pm25.toFixed(1) + " ㎍/m³" : "-"}</td>
+            <td>${d.temperature !== undefined && d.temperature !== null ? d.temperature.toFixed(1) + " ℃" : "-"}</td>
+            <td>${d.surfaceTemp !== undefined && d.surfaceTemp !== null ? d.surfaceTemp.toFixed(1) + " ℃" : "-"}</td>
+            <td>${d.humidity !== undefined && d.humidity !== null ? d.humidity.toFixed(1) + " %" : "-"}</td>
+            <td>${d.batteryLevel !== undefined && d.batteryLevel !== null ? d.batteryLevel.toFixed(1) + " %" : "-"}</td>
+            <td>${lastSeenStr}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      let currentRangeHours = 1; // 기본 1시간
+
+      // 3. 최근 측정 데이터(그래프) 가져오기
+      async function fetchMeasurements(stationId = currentStationId) {
+        try {
+          const now = new Date();
+          const endDate = now.toISOString();
+          const startDate = new Date(
+            now.getTime() - currentRangeHours * 60 * 60 * 1000,
+          ).toISOString();
+
+          // 기본적으로 100개만 가져오도록 백엔드에 설정되어 있어 과거 데이터만 잘려서 나오므로, size=2000을 명시하여 최근 데이터까지 모두 가져옵니다.
+          const res = await fetch(
+            `${API_BASE_URL}/stations/${stationId}/measurements?startDate=${startDate}&endDate=${endDate}&size=2000`,
+            { headers: reqHeaders },
+          );
+          if (!res.ok) return;
+          const json = await res.json();
+          const data = json.data.measurements; // API가 이미 과거->최신 순(asc)으로 정렬해서 주므로 그대로 사용
+
+          if (data.length === 0) return;
+
+          // x축 라벨(시간)과 데이터 배열 추출 (time scale을 쓰므로 ISO string 그대로 사용)
+          const labels = data.map((d) => d.timestamp);
+          const pm25 = data.map((d) => d.pm25);
+          const temp = data.map((d) => d.temperature);
+          const humi = data.map((d) => d.humidity);
+          const no2 = data.map((d) => d.no2);
+          const co2 = data.map((d) => d.co2);
+          const surfaceTemp = data.map((d) => d.surfaceTemp);
+
+          airChart.options.scales.x.min = startDate;
+          airChart.options.scales.x.max = endDate;
+          airChart.data.labels = labels;
+          airChart.data.datasets[0].data = pm25;
+          airChart.data.datasets[1].data = co2;
+          airChart.data.datasets[2].data = no2;
+          airChart.update();
+
+          envChart.options.scales.x.min = startDate;
+          envChart.options.scales.x.max = endDate;
+          envChart.data.labels = labels;
+          envChart.data.datasets[0].data = temp;
+          envChart.data.datasets[1].data = surfaceTemp;
+          envChart.data.datasets[2].data = humi;
+          envChart.update();
+
+          // 측정 배열의 첫 데이터(과거)와 마지막 데이터(최신)를 이용해 KPI 및 Delta 업데이트
+          if (data.length > 0) {
+            updateKPI(data[data.length - 1], data[0]);
+          }
+        } catch (err) {
+          console.error("Measurements fetch error:", err);
+        }
+      }
+
+      function updateMapMarkers(stations) {
+        mapMarkers.forEach((m) => m.setMap(null));
+        mapMarkers = [];
+
+        stations.forEach((s) => {
+          if (!s.latitude || !s.longitude) return;
+          const marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(s.latitude, s.longitude),
+            map,
+            icon: {
+              content: `<div class="bench-marker ${s.status || "offline"}" style="position:relative"></div>`,
+              anchor: new naver.maps.Point(9, 9),
+            },
+          });
+          mapMarkers.push(marker);
+        });
+      }
+
+      // 초기화
+      function initNaverMap() {
+        map = new naver.maps.Map("map", {
+          center: new naver.maps.LatLng(36.10255, 129.3884),
+          zoom: 17,
+          mapDataControl: false,
+          scaleControl: false,
+        });
+        fetchStations();
+      }
+
+      window.navermap_authFailure = () =>
+        showMapNotice("네이버 지도 인증 실패");
+
+      // 4. 최근 이벤트 내역 가져오기
+      async function fetchEvents(stationId = currentStationId) {
+        try {
+          const now = new Date();
+          const endDate = now.toISOString();
+          const startDate = new Date(
+            now.getTime() - currentRangeHours * 60 * 60 * 1000,
+          ).toISOString();
+
+          const res = await fetch(
+            `${API_BASE_URL}/stations/${stationId}/events?startDate=${startDate}&endDate=${endDate}&size=30`,
+            { headers: reqHeaders },
+          );
+          if (!res.ok) return;
+          const json = await res.json();
+          const events = json.data.events;
+
+          const evPanel = document.getElementById("eventsPanel");
+          evPanel.innerHTML = `<h2>최근 이벤트</h2><div class="sub">events · status 토픽 기준</div>`;
+
+          if (!events || events.length === 0) {
+            evPanel.innerHTML += `<div class="sub" style="margin-top:30px; text-align:center;">해당 기간 내 수집된 이벤트가 없습니다.</div>`;
+            return;
+          }
+
+          events.forEach((e) => {
+            let dotClass = "info";
+            if (e.level === "warning") dotClass = "warn";
+            else if (e.level === "error" || e.level === "critical")
+              dotClass = "danger";
+
+            const timeStr = new Date(e.timestamp).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            evPanel.innerHTML += `
+              <div class="event">
+                <div class="dot ${dotClass}"></div>
+                <div>
+                  <div class="msg">${e.message || e.eventType}</div>
+                  <div class="time">${timeStr} · Station #${stationId}</div>
+                </div>
+              </div>
+            `;
+          });
+        } catch (err) {
+          console.error("Events fetch error:", err);
+        }
+      }
+
+      function initDashboard() {
+        fetchLatestData();
+        fetchMeasurements();
+        fetchStations();
+        fetchEvents();
+
+        // 스테이션 선택 변경 시 데이터 다시 불러오기
+        const selectEl = document.getElementById("stationSelect");
+        if (selectEl) {
+          selectEl.addEventListener("change", (e) => {
+            currentStationId = parseInt(e.target.value);
+            // 패널 제목 업데이트
+            const envSub = document.querySelector(
+              ".panel-grid .panel:first-child .sub",
+            );
+            if (envSub)
+              envSub.textContent = `PM2.5 · 온도 · 습도 — Station #${currentStationId}`;
+
+            fetchLatestData();
+            fetchMeasurements();
+            fetchEvents();
+          });
+        }
+
+        if (NAVER_MAP_CLIENT_ID === "YOUR_NCP_KEY_ID") {
+          showMapNotice("네이버 지도 Client ID가 필요합니다.");
+        } else {
+          const sc = document.createElement("script");
+          sc.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`;
+          sc.onload = initNaverMap;
+          document.head.appendChild(sc);
+        }
+
+        // Range tabs 기능 연결
+        document.querySelectorAll(".range-tabs button").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document
+              .querySelectorAll(".range-tabs button")
+              .forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            const text = e.target.textContent;
+            if (text === "10M") currentRangeHours = 10 / 60;
+            else if (text === "1H") currentRangeHours = 1;
+            else if (text === "24H") currentRangeHours = 24;
+            else if (text === "7D") currentRangeHours = 24 * 7;
+            else if (text === "30D") currentRangeHours = 24 * 30;
+            fetchMeasurements(); // 범위 변경 즉시 데이터 다시 불러오기
+            fetchEvents();
+          });
+        });
+
+        // 10초마다 주기적 업데이트
+        setInterval(() => {
+          fetchLatestData();
+          fetchStations();
+          fetchMeasurements();
+          fetchEvents();
+        }, 10000);
+      }
+
+      // 로드 완료 시 시작
+      document.addEventListener("DOMContentLoaded", initDashboard);
+    </script>
+  </body>
+</html>
