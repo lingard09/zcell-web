@@ -6,14 +6,26 @@
     <title>Contact - Zcell</title>
 
     <!-- Typography -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <!-- Navigation -->
     <nav>
       <a href="/en/" class="logo" style="display: flex; align-items: center">
-        <img src="/assets/images/zcell-logo.png" alt="Zcell Logo" style="height: 60px; width: 100px; object-fit: cover; object-position: center" />
+        <img
+          src="/assets/images/zcell-logo.png"
+          alt="Zcell Logo"
+          style="
+            height: 60px;
+            width: 100px;
+            object-fit: cover;
+            object-position: center;
+          "
+        />
       </a>
       <div class="nav-links">
         <a href="/en/">Home</a>
@@ -21,15 +33,15 @@
         <a href="/en/members/">Members</a>
         <a href="/en/contact/" class="active">Contact</a>
       </div>
-      <button class="hamburger-menu" type="button" aria-label="Toggle navigation">
+      <button
+        class="hamburger-menu"
+        type="button"
+        aria-label="Toggle navigation"
+      >
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </button>
-      <a href="/contact/" class="lang-slider is-en" aria-label="한국어로 보기">
-        <span class="lang-slider-en">EN</span>
-        <span class="lang-slider-ko">KOR</span>
-      </a>
     </nav>
 
     <!-- Contact Section -->
@@ -45,12 +57,31 @@
           API integration, and partnership opportunities.
         </p>
 
-        <form action="https://formspree.io/f/xzepbpez" method="POST" class="contact-form">
+        <form
+          action="https://formspree.io/f/xzepbpez"
+          method="POST"
+          class="contact-form"
+        >
           <input type="text" name="name" placeholder="Name" required />
           <input type="email" name="email" placeholder="Email" required />
-          <textarea name="message" placeholder="Message" rows="5" required></textarea>
-          <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" />
-          <input type="hidden" name="_subject" value="New inquiry from Zcell website" />
+          <textarea
+            name="message"
+            placeholder="Message"
+            rows="5"
+            required
+          ></textarea>
+          <input
+            type="text"
+            name="_gotcha"
+            class="hp-field"
+            tabindex="-1"
+            autocomplete="off"
+          />
+          <input
+            type="hidden"
+            name="_subject"
+            value="New inquiry from Zcell website"
+          />
           <button type="submit" class="cta-btn">Send Message</button>
         </form>
 
@@ -62,9 +93,7 @@
 
     <!-- Footer -->
     <footer>
-      <p class="footer-text">
-        &copy; 2026 Zcell Station. All rights reserved.
-      </p>
+      <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
       <a href="/contact/" class="lang-slider is-en" aria-label="한국어로 보기">
         <span class="lang-slider-en">EN</span>
         <span class="lang-slider-ko">KOR</span>
@@ -72,12 +101,12 @@
     </footer>
 
     <script>
-      const hamburgerMenu = document.querySelector('.hamburger-menu');
-      const navLinks = document.querySelector('.nav-links');
+      const hamburgerMenu = document.querySelector(".hamburger-menu");
+      const navLinks = document.querySelector(".nav-links");
 
       if (hamburgerMenu && navLinks) {
-        hamburgerMenu.addEventListener('click', () => {
-          navLinks.classList.toggle('active');
+        hamburgerMenu.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
         });
       }
     </script>

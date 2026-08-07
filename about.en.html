@@ -1,87 +1,120 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About - Zcell</title>
-    <meta http-equiv="refresh" content="0; url=/en/about/">
+    <meta http-equiv="refresh" content="0; url=/en/about/" />
 
     <!-- Typography -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <!-- Navigation -->
     <nav>
-        <a href="index.en.html" class="logo" style="display: flex; align-items: center;">
-            <img src="assets/images/zcell-logo.png" alt="Zcell Logo" style="height: 60px; width: 100px; object-fit: cover; object-position: center;">
-        </a>
-        <div class="nav-links">
-            <a href="index.en.html">Home</a>
-            <a href="about.en.html" class="active">About</a>
-            <a href="members.en.html">Members</a>
-            <a href="contact.en.html">Contact</a>
-        </div>
-        <button class="hamburger-menu" type="button" aria-label="Toggle navigation">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        </button>
+      <a
+        href="index.en.html"
+        class="logo"
+        style="display: flex; align-items: center"
+      >
+        <img
+          src="assets/images/zcell-logo.png"
+          alt="Zcell Logo"
+          style="
+            height: 60px;
+            width: 100px;
+            object-fit: cover;
+            object-position: center;
+          "
+        />
+      </a>
+      <div class="nav-links">
+        <a href="index.en.html">Home</a>
+        <a href="about.en.html" class="active">About</a>
+        <a href="members.en.html">Members</a>
+        <a href="contact.en.html">Contact</a>
+      </div>
+      <button
+        class="hamburger-menu"
+        type="button"
+        aria-label="Toggle navigation"
+      >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </nav>
 
     <!-- About Section -->
     <section id="about">
-        <div class="section-header">
-            <span class="section-label">About Us</span>
-            <h2 class="section-title">Redefining Urban Spaces</h2>
-            <p class="about-description" style="margin-top: 24px;">
-                Zcell is a smart bench platform designed to integrate seamlessly into city parks and streets.<br/>We combine renewable energy, real-time environmental monitoring, and microalgae carbon reduction technology to create greener, smarter cities.
-            </p>
+      <div class="section-header">
+        <span class="section-label">About Us</span>
+        <h2 class="section-title">Redefining Urban Spaces</h2>
+        <p class="about-description" style="margin-top: 24px">
+          Zcell is a smart bench platform designed to integrate seamlessly into
+          city parks and streets.<br />We combine renewable energy, real-time
+          environmental monitoring, and microalgae carbon reduction technology
+          to create greener, smarter cities.
+        </p>
+      </div>
+
+      <div class="grid">
+        <div class="article-card">
+          <h3>Air Quality Monitoring</h3>
+          <p>
+            Real-time PM2.5, PM10, and NO2 tracking. Delivering highly accurate
+            atmospheric data straight from urban smart benches.
+          </p>
         </div>
 
-        <div class="grid">
-            <div class="article-card">
-                <h3>Air Quality Monitoring</h3>
-                <p>Real-time PM2.5, PM10, and NO2 tracking. Delivering highly accurate atmospheric data straight from urban smart benches.</p>
-            </div>
-
-            <div class="article-card">
-                <h3>Microalgae Reactor</h3>
-                <p>Active carbon reduction through integrated microalgae cultivation. Monitored continuously via precision turbidity sensors.</p>
-            </div>
-
-            <div class="article-card">
-                <h3>Urban Heat Island</h3>
-                <p>Surface temperature analysis mapping out urban heat distribution. Essential data for sustainable city planning.</p>
-            </div>
-
-            <div class="article-card">
-                <h3>Off-Grid Power</h3>
-                <p>100% solar-powered operations. Clean, renewable energy driving robust IoT communication via LTE-M networks.</p>
-            </div>
+        <div class="article-card">
+          <h3>Microalgae Reactor</h3>
+          <p>
+            Active carbon reduction through integrated microalgae cultivation.
+            Monitored continuously via precision turbidity sensors.
+          </p>
         </div>
+
+        <div class="article-card">
+          <h3>Urban Heat Island</h3>
+          <p>
+            Surface temperature analysis mapping out urban heat distribution.
+            Essential data for sustainable city planning.
+          </p>
+        </div>
+
+        <div class="article-card">
+          <h3>Off-Grid Power</h3>
+          <p>
+            100% solar-powered operations. Clean, renewable energy driving
+            robust IoT communication via LTE-M networks.
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
-        <a href="about.html" class="lang-slider is-en" aria-label="한국어로 보기">
-            <span class="lang-slider-en">EN</span>
-            <span class="lang-slider-ko">KOR</span>
-        </a>
+      <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
+      <a href="about.html" class="lang-slider is-en" aria-label="한국어로 보기">
+        <span class="lang-slider-en">EN</span>
+        <span class="lang-slider-ko">KOR</span>
+      </a>
     </footer>
 
     <script>
-        const hamburgerMenu = document.querySelector('.hamburger-menu');
-        const navLinks = document.querySelector('.nav-links');
+      const hamburgerMenu = document.querySelector(".hamburger-menu");
+      const navLinks = document.querySelector(".nav-links");
 
-        if (hamburgerMenu && navLinks) {
-            hamburgerMenu.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-            });
-        }
+      if (hamburgerMenu && navLinks) {
+        hamburgerMenu.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+      }
     </script>
-
-</body>
+  </body>
 </html>

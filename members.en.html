@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Members - Zcell</title>
-    <meta http-equiv="refresh" content="0; url=/en/members/">
+    <meta http-equiv="refresh" content="0; url=/en/members/" />
 
     <!-- Typography -->
     <link
@@ -38,7 +38,11 @@
         <a href="members.en.html" class="active">Members</a>
         <a href="contact.en.html">Contact</a>
       </div>
-      <button class="hamburger-menu" type="button" aria-label="Toggle navigation">
+      <button
+        class="hamburger-menu"
+        type="button"
+        aria-label="Toggle navigation"
+      >
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
@@ -59,8 +63,13 @@
           </div>
           <div class="member-info">
             <h3>Ah-Ram Kim</h3>
-            <p>Advisor · Ph.D. in Systems Biology, State University of New York (SUNY)</p>
-            <p class="member-major">School of Life Science, Handong Global University</p>
+            <p>
+              Advisor · Ph.D. in Systems Biology, State University of New York
+              (SUNY)
+            </p>
+            <p class="member-major">
+              School of Life Science, Handong Global University
+            </p>
             <a href="mailto:arkim@handong.edu" class="member-email"
               >arkim@handong.edu</a
             >
@@ -141,9 +150,7 @@
 
     <!-- Footer -->
     <footer>
-      <p class="footer-text">
-        &copy; 2026 Zcell Station. All rights reserved.
-      </p>
+      <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
       <a
         href="members.html"
         class="lang-slider is-en"
@@ -155,12 +162,12 @@
     </footer>
 
     <script>
-      const hamburgerMenu = document.querySelector('.hamburger-menu');
-      const navLinks = document.querySelector('.nav-links');
+      const hamburgerMenu = document.querySelector(".hamburger-menu");
+      const navLinks = document.querySelector(".nav-links");
 
       if (hamburgerMenu && navLinks) {
-        hamburgerMenu.addEventListener('click', () => {
-          navLinks.classList.toggle('active');
+        hamburgerMenu.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
         });
       }
     </script>

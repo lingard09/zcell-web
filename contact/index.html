@@ -6,14 +6,26 @@
     <title>Contact - Zcell</title>
 
     <!-- Typography -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <!-- Navigation -->
     <nav>
       <a href="/" class="logo" style="display: flex; align-items: center">
-        <img src="/assets/images/zcell-logo.png" alt="Zcell Logo" style="height: 60px; width: 100px; object-fit: cover; object-position: center" />
+        <img
+          src="/assets/images/zcell-logo.png"
+          alt="Zcell Logo"
+          style="
+            height: 60px;
+            width: 100px;
+            object-fit: cover;
+            object-position: center;
+          "
+        />
       </a>
       <div class="nav-links">
         <a href="/">Home</a>
@@ -26,10 +38,6 @@
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </button>
-      <a href="/en/contact/" class="lang-slider is-ko" aria-label="View in English">
-        <span class="lang-slider-en">EN</span>
-        <span class="lang-slider-ko">KOR</span>
-      </a>
     </nav>
 
     <!-- Contact Section -->
@@ -42,34 +50,55 @@
         <h3>문의폼</h3>
         <p>Zcell Station 설치, API 구매, 파트너십 문의는 아래로 연락 주세요.</p>
 
-        <form action="https://formspree.io/f/xzepbpez" method="POST" class="contact-form">
+        <form
+          action="https://formspree.io/f/xzepbpez"
+          method="POST"
+          class="contact-form"
+        >
           <input type="text" name="name" placeholder="이름" required />
           <input type="email" name="email" placeholder="이메일" required />
-          <textarea name="message" placeholder="문의 내용" rows="5" required></textarea>
-          <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" />
+          <textarea
+            name="message"
+            placeholder="문의 내용"
+            rows="5"
+            required
+          ></textarea>
+          <input
+            type="text"
+            name="_gotcha"
+            class="hp-field"
+            tabindex="-1"
+            autocomplete="off"
+          />
           <input type="hidden" name="_subject" value="Zcell 웹사이트 문의" />
           <button type="submit" class="cta-btn">메시지 보내기</button>
         </form>
-        <p class="office-address">지셀 사무실 주소: 한동대학교 제네시스랩 410호</p>
+        <p class="office-address">
+          지셀 사무실 주소: 한동대학교 제네시스랩 410호
+        </p>
       </div>
     </section>
 
     <!-- Footer -->
     <footer>
       <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
-      <a href="/en/contact/" class="lang-slider is-ko" aria-label="View in English">
+      <a
+        href="/en/contact/"
+        class="lang-slider is-ko"
+        aria-label="View in English"
+      >
         <span class="lang-slider-en">EN</span>
         <span class="lang-slider-ko">KOR</span>
       </a>
     </footer>
 
     <script>
-      const hamburgerMenu = document.querySelector('.hamburger-menu');
-      const navLinks = document.querySelector('.nav-links');
+      const hamburgerMenu = document.querySelector(".hamburger-menu");
+      const navLinks = document.querySelector(".nav-links");
 
       if (hamburgerMenu && navLinks) {
-        hamburgerMenu.addEventListener('click', () => {
-          navLinks.classList.toggle('active');
+        hamburgerMenu.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
         });
       }
     </script>
