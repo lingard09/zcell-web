@@ -4,30 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Zcell</title>
-    <meta http-equiv="refresh" content="0; url=/about/">
 
     <!-- Typography -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
     <!-- Navigation -->
     <nav>
-        <a href="index.html" class="logo" style="display: flex; align-items: center;">
-            <img src="assets/images/zcell-logo.png" alt="Zcell Logo" style="height: 60px; width: 100px; object-fit: cover; object-position: center;">
+        <a href="/" class="logo" style="display: flex; align-items: center;">
+            <img src="/assets/images/zcell-logo.png" alt="Zcell Logo" style="height: 60px; width: 100px; object-fit: cover; object-position: center;">
         </a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="about.html" class="active">About</a>
-            <a href="members.html">Members</a>
-            <a href="contact.html">Contact</a>
+            <a href="/">Home</a>
+            <a href="/about/" class="active">About</a>
+            <a href="/members/">Members</a>
+            <a href="/contact/">Contact</a>
         </div>
         <button class="hamburger-menu" aria-label="Toggle navigation">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
         </button>
+        <a href="/en/about/" class="lang-slider is-ko" aria-label="View in English">
+            <span class="lang-slider-en">EN</span>
+            <span class="lang-slider-ko">KOR</span>
+        </a>
     </nav>
 
     <!-- About Section -->
@@ -66,7 +69,7 @@
     <!-- Footer -->
     <footer>
         <p class="footer-text">&copy; 2026 Zcell Station. All rights reserved.</p>
-        <a href="about.en.html" class="lang-slider is-ko" aria-label="View in English">
+        <a href="/en/about/" class="lang-slider is-ko" aria-label="View in English">
             <span class="lang-slider-en">EN</span>
             <span class="lang-slider-ko">KOR</span>
         </a>
@@ -76,9 +79,12 @@
         const hamburgerMenu = document.querySelector('.hamburger-menu');
         const navLinks = document.querySelector('.nav-links');
 
-        hamburgerMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+        if (hamburgerMenu && navLinks) {
+            hamburgerMenu.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+        }
     </script>
+
 </body>
 </html>
