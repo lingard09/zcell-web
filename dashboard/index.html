@@ -726,6 +726,11 @@
         "ngrok-skip-browser-warning": "69420",
       };
 
+      // 30초 간격 원시 측정값이므로 곡선 보간 없이 꺾은선(직선 구간)으로 그린다.
+      // 표본이 적을 때만 꼭짓점을 표시 — 장기 구간에선 점이 뭉개져 오히려 읽기 어렵다.
+      const pointRadius = (ctx) =>
+        ctx.chart.data.labels.length <= 150 ? 2.5 : 0;
+
       // Chart 1: Air Quality & Gas
       const ctxAir = document.getElementById("airChart");
       const gradCo2 = ctxAir
@@ -743,29 +748,38 @@
               label: "PM2.5 (㎍/m³)",
               data: [],
               borderColor: "#38bdf8",
+              pointBackgroundColor: "#38bdf8",
               backgroundColor: gradCo2,
               fill: true,
-              tension: 0.4,
+              tension: 0,
               borderWidth: 2.5,
-              pointRadius: 0,
+              pointRadius,
+              pointHoverRadius: 4,
+              pointHitRadius: 8,
               yAxisID: "y",
             },
             {
               label: "CO2 (ppm)",
               data: [],
               borderColor: "#a3e635",
-              tension: 0.4,
+              pointBackgroundColor: "#a3e635",
+              tension: 0,
               borderWidth: 2,
-              pointRadius: 0,
+              pointRadius,
+              pointHoverRadius: 4,
+              pointHitRadius: 8,
               yAxisID: "y1",
             },
             {
               label: "NO2 (ppm)",
               data: [],
               borderColor: "#ef4444",
-              tension: 0.4,
+              pointBackgroundColor: "#ef4444",
+              tension: 0,
               borderWidth: 1.5,
-              pointRadius: 0,
+              pointRadius,
+              pointHoverRadius: 4,
+              pointHitRadius: 8,
               yAxisID: "y2",
             },
           ],
@@ -828,28 +842,37 @@
               label: "대기온도 (℃)",
               data: [],
               borderColor: "#f97316",
-              tension: 0.4,
+              pointBackgroundColor: "#f97316",
+              tension: 0,
               borderWidth: 2,
-              pointRadius: 0,
+              pointRadius,
+              pointHoverRadius: 4,
+              pointHitRadius: 8,
               yAxisID: "y",
             },
             {
               label: "지면온도 (℃)",
               data: [],
               borderColor: "#fbbf24",
-              tension: 0.4,
+              pointBackgroundColor: "#fbbf24",
+              tension: 0,
               borderWidth: 2,
-              pointRadius: 0,
+              pointRadius,
+              pointHoverRadius: 4,
+              pointHitRadius: 8,
               yAxisID: "y",
             },
             {
               label: "습도 (%)",
               data: [],
               borderColor: "#22d3ee",
+              pointBackgroundColor: "#22d3ee",
               borderDash: [5, 4],
-              tension: 0.4,
+              tension: 0,
               borderWidth: 1.5,
-              pointRadius: 0,
+              pointRadius,
+              pointHoverRadius: 4,
+              pointHitRadius: 8,
               yAxisID: "y1",
             },
           ],
@@ -1393,13 +1416,13 @@
           });
         });
 
-        // 10초마다 주기적 업데이트
+        // 30초마다 주기적 업데이트 (디바이스 전송 주기와 동일)
         setInterval(() => {
           fetchLatestData();
           fetchStations();
           fetchMeasurements();
           fetchEvents();
-        }, 10000);
+        }, 30000);
       }
 
       // 로드 완료 시 시작
