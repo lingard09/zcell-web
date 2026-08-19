@@ -4,3 +4,6 @@ deployment:
     - export DEPLOYPATH=/www/hk4ujeona36tvpuz/public_html/zcell.co.kr/
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R * $DEPLOYPATH
+    # 셸 glob(*)은 dotfile을 안 잡으므로 .htaccess는 명시적으로 복사한다.
+    # (다른 dotfile — .git/.gitignore/.cpanel.yml — 은 일부러 배포하지 않는다)
+    - /bin/cp .htaccess $DEPLOYPATH
