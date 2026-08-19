@@ -606,7 +606,7 @@
           <div class="delta up">▲ 공기 대비 +15.8℃</div>
         </div>
         <div class="kpi" style="--bar: #fca5a5">
-          <div class="label">CO2 <span class="chip good">보통</span></div>
+          <div class="label">CO2 <span class="chip">측정값</span></div>
           <div class="value">0<span class="unit">ppm</span></div>
           <div class="delta flat">—</div>
         </div>
@@ -1182,10 +1182,11 @@
                 status = "warn";
               }
             } else if (labelTxt.includes("CO2")) {
-              if (val > 1000) {
-                text = "환기 요망";
-                status = "warn";
-              } else text = "보통";
+              // CO2는 미세조류 탄소저감 증명용 측정값 — 실외 등급/알림에서 제외한다.
+              // (docs/quality_thresholds.json의 measured_only, quality_thresholds.md §서두)
+              // 좋음/보통/나쁨 같은 등급 언어도, "환기 요망" 같은 실내형 알림도 쓰지 않는다.
+              status = "";
+              text = "측정값";
             } else if (labelTxt.includes("NO2")) {
               if (val > 0.06) {
                 text = "나쁨";
@@ -1197,7 +1198,7 @@
                 status = "warn";
               } else text = "정상";
             }
-            chipEl.className = `chip ${status}`;
+            chipEl.className = `chip ${status}`.trim();
             chipEl.textContent = text;
           } else if (chipEl) {
             chipEl.className = "chip";
