@@ -225,6 +225,18 @@
         background: rgba(251, 191, 36, 0.12);
         color: var(--warn);
       }
+      /* 수신이 끊긴 상태 — 마지막으로 받은 값이 현재값처럼 읽히지 않도록 낮춘다 */
+      .kpi-grid.stale .kpi .value,
+      .kpi-grid.stale .kpi .unit {
+        opacity: 0.4;
+      }
+      .kpi-grid.stale .kpi::before {
+        opacity: 0.2;
+      }
+      .kpi-grid.stale .kpi:hover {
+        transform: none;
+        background: var(--surface);
+      }
 
       /* Panels */
       .panel-grid {
@@ -1016,6 +1028,12 @@
       function updateKPI(data, oldData = null) {
         if (!data) return;
 
+        // 수신이 끊겼으면 이 값들은 "현재값"이 아니라 "마지막으로 받은 값"이다.
+        // 등급 칩(좋음/보통/나쁨)은 지금 상태를 단정하는 표현이라 이때는 아예 띄우지 않는다.
+        const stale = isStale(data.timestamp);
+        const gridEl = document.querySelector(".kpi-grid");
+        if (gridEl) gridEl.classList.toggle("stale", stale);
+
         const kpis = document.querySelectorAll(".kpi");
         kpis.forEach((kpi) => {
           const labelTxt = kpi.querySelector(".label").textContent.trim();
@@ -1101,11 +1119,15 @@
               deltaEl.className = "delta flat";
               deltaEl.textContent = "— 데이터 없음";
             }
+            if (stale) {
+              deltaEl.className = "delta flat";
+              deltaEl.textContent = `마지막 값 · ${formatSince(data.timestamp)}`;
+            }
           }
           // 3. 상태 칩(Chip) 업데이트 로직
           const labelEl = kpi.querySelector(".label");
           const chipEl = labelEl.querySelector(".chip");
-          if (chipEl && val !== null && val !== undefined) {
+          if (chipEl && !stale && val !== null && val !== undefined) {
             let status = "good",
               text = "정상";
             if (labelTxt.includes("PM2.5")) {
